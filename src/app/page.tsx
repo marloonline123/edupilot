@@ -1,4 +1,6 @@
 import CourseCard from '@/components/courses/CourseCard'
+import Cta from '@/components/courses/Cta'
+import RecentSessions from '@/components/courses/RecentSessions'
 import React from 'react'
 
 const courses = [
@@ -33,12 +35,17 @@ const courses = [
 const Page = () => {
   return (
     <main>
-      <h1>Home</h1>
+      <h1>Populer Courses</h1>
 
       <section className='home-section'>
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
+      </section>
+
+      <section className='home-section'>
+        <RecentSessions title='Recent Sessions' classNames='max-md:w-full w-2/3' />
+        <Cta />
       </section>
     </main>
   )
