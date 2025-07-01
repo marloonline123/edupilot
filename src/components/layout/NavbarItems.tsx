@@ -2,6 +2,13 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+    SignInButton,
+    SignUpButton,
+    SignedIn,
+    SignedOut,
+    UserButton,
+} from "@clerk/nextjs";
 
 const links = [
     { label: 'Home', url: '/' },
@@ -11,14 +18,23 @@ const links = [
 export default function NavbarItems() {
     const pathname = usePathname();
     return (
-        <nav>
+        <nav className="flex gap-3 items-center">
             <ul className="flex gap-3 items-center">
                 {links.map((link, index) => (
                     <li key={index}>
                         <Link href={link.url} className={cn(pathname === link.url && 'text-primary font-semibold')}>{link.label}</Link>
                     </li>
                 ))}
+                
             </ul>
+
+            <SignedOut>
+                <SignInButton />
+                <SignUpButton />
+            </SignedOut>
+            <SignedIn>
+                <UserButton />
+            </SignedIn>
         </nav>
     );
 }
