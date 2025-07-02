@@ -1,3 +1,4 @@
+import { getSubjectColor } from "@/lib/utils";
 import { Course } from "@/types/course";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,7 @@ interface CourseCardProps {
 }
 export default function CourseCard({ course }: CourseCardProps) {
     return (
-        <div className="course-card" style={{ backgroundColor: course.color }}>
+        <div className="course-card" style={{ backgroundColor: getSubjectColor(course.subject) }}>
             <div className="flex items-center justify-between">
                 <span className="subject-badge">{course.subject}</span>
                 <button className="course-bookmark">
