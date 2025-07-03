@@ -8,7 +8,6 @@ export default async function Courses({searchParams}: SearchParams) {
     const subject = params?.subject || '';
     const topic = params?.topic || '';
     const courses = await getAllCourses({subject, topic});
-    console.log('path', courses);
     
     return (
         <main className="">

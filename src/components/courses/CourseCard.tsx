@@ -6,6 +6,7 @@ import Link from "next/link";
 interface CourseCardProps {
     course: Course;
 }
+
 export default function CourseCard({ course }: CourseCardProps) {
     return (
         <div className="course-card" style={{ backgroundColor: getSubjectColor(course.subject) }}>

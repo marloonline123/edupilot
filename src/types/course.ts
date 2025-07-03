@@ -4,9 +4,10 @@ export interface Course {
     description?: string
     subject: string
     topic: string
-    voice?: string
+    voice: string
     color: string
     duration: number
+    style: string
     bookmarked: boolean
     createdAt?: string
 }
