@@ -88,3 +88,17 @@ export async function getUserSessions(userId: string, limit = 10) {
 
     return data.map(({courses}) => courses);
 }
+
+export async function getUserCourses(userId: string) {
+    const supabase = createSupabaseClient();
+    const query = supabase.from("courses")
+        .select()
+        .eq("author", userId)
+        .order("created_at", { ascending: false });
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(error?.message ?? "Failed to fetch sessions");
+
+    return data;
+}

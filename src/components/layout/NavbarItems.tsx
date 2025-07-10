@@ -14,6 +14,7 @@ const links = [
     { label: 'Home', url: '/' },
     { label: 'Courses', url: '/courses' },
     { label: 'Subscription', url: '/subscription' },
+    { label: 'My Journey', url: '/my-journey' },
 ]
 export default function NavbarItems() {
     const pathname = usePathname();

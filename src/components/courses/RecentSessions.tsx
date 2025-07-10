@@ -11,10 +11,11 @@ import { cn, getSubjectColor } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { getSessions } from "@/actions/course";
+import { Course } from "@/types/course";
 
 interface RecentSessionsProps {
     title: string;
-    companions?: Companion[];
+    courses?: Course[];
     classNames?: string;
 }
 
@@ -36,7 +37,7 @@ const RecentSessions = async ({ title, classNames }: RecentSessionsProps) => {
                     {recentSessions?.map(({ id, subject, name, topic, duration }) => (
                         <TableRow key={id}>
                             <TableCell>
-                                <Link href={`/companions/${id}`}>
+                                <Link href={`/courses/${id}`}>
                                     <div className="flex items-center gap-2">
                                         <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden" style={{ backgroundColor: getSubjectColor(subject) }}>
                                             <Image
