@@ -102,3 +102,27 @@ export async function getUserCourses(userId: string) {
 
     return data;
 }
+
+export async function canCreateCourse() {
+    const { has, userId } = await auth();
+    const supabase = createSupabaseClient();
+    
+    if (has({plan: 'gold'})) return true;
+
+    let limit = 0;
+
+    if (has({ feature: '3_active_courses'})) {
+        limit = 3;
+    }
+    if (has({ feature: '10_active_courses'})) {
+        limit = 10;
+    }
+
+    const {data, error } = await supabase.from('courses')
+        .select('id', {count : 'exact'})
+        .eq('author', userId)
+
+    if (error) throw new Error(error?.message ?? "Failed to fetch courses");
+
+    return data?.length >= limit ? false : true;
+}
