@@ -6,6 +6,7 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import soundwaves from "@/constants/soundwaves.json";
+import { storeSession } from "@/actions/course";
 
 enum CallStatus {
     ACTIVE = "ACTIVE",
@@ -33,7 +34,10 @@ export default function CourseMeeting({ course, userName, userImage }: { course:
 
     useEffect(() => {
         const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
-        const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+        const onCallEnd = () => {
+            setCallStatus(CallStatus.FINISHED);
+            storeSession(course.id);
+        };
         const onMessage = (message: Message) => { 
             console.log('message', message);
             

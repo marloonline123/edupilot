@@ -10,10 +10,10 @@ export default async function createCourse(formData: CreateCourse) {
         author,
         ...formData
     })
-    
+
     console.log('data', data);
     console.log('error', error);
-    
+
     if (error || !data) throw new Error(error?.message ?? "Failed to create course");
 
     return data[0];
@@ -31,7 +31,7 @@ export async function getAllCourses({ limit = 10, page = 1, subject, topic }: Ge
         query.or(`topic.ilike.'%${topic}%, name.ilike.%${topic}%`);
     }
 
-    const { data: courses, error } = await query.range((page - 1) * limit, page * limit - 1);
+    const { data: courses, error } = await query.order("created_at", { ascending: false }).range((page - 1) * limit, page * limit - 1);
 
     if (error) throw new Error(error?.message ?? "Failed to fetch courses");
 
@@ -47,4 +47,44 @@ export async function getCourse(id: string) {
     if (error) throw new Error(error?.message ?? "Failed to fetch course");
 
     return course;
+}
+
+export async function storeSession(courseId: string|number) {
+    const { userId } = await auth();
+    const supabase = createSupabaseClient();
+    const query = supabase.from("sessions").insert({ course_id: courseId, user_id: userId });
+    const { data, error } = await query;
+
+    if (error) throw new Error(error?.message ?? "Failed to store session");
+
+    return data;
+}
+
+export async function getSessions(limit = 10) {
+    const supabase = createSupabaseClient();
+    const query = supabase.from("sessions")
+        .select('courses:course_id (*)')
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(error?.message ?? "Failed to fetch sessions");
+
+    return data.map(({courses}) => courses);
+}
+
+export async function getUserSessions(userId: string, limit = 10) {
+    const supabase = createSupabaseClient();
+    const query = supabase.from("sessions")
+        .select('courses:course_id (*)')
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+    const { data, error } = await query;
+
+    if (error) throw new Error(error?.message ?? "Failed to fetch sessions");
+
+    return data.map(({courses}) => courses);
 }

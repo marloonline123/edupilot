@@ -10,7 +10,7 @@ import {
 import { cn, getSubjectColor } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { recentSessions } from "@/constants";
+import { getSessions } from "@/actions/course";
 
 interface RecentSessionsProps {
     title: string;
@@ -18,7 +18,8 @@ interface RecentSessionsProps {
     classNames?: string;
 }
 
-const RecentSessions = ({ title, classNames }: RecentSessionsProps) => {
+const RecentSessions = async ({ title, classNames }: RecentSessionsProps) => {
+    const recentSessions = await getSessions();
     return (
         <article className={cn('course-list', classNames)}>
             <h2 className="font-bold text-3xl">{title}</h2>
@@ -46,10 +47,11 @@ const RecentSessions = ({ title, classNames }: RecentSessionsProps) => {
                                         </div>
                                         <div className="flex flex-col gap-2">
                                             <p className="font-bold text-xl">
-                                                {name}
+                                                {name.length > 20 ? name.slice(0, 20) + '...' : name}
+
                                             </p>
                                             <p className="text-sm">
-                                                {topic}
+                                                {topic.length > 20 ? topic.slice(0, 30) + '...' : topic}
                                             </p>
                                         </div>
                                     </div>
